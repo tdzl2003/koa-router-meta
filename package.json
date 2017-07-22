@@ -1,0 +1,20 @@
+{
+  "name": "koa-router-meta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tdzl2003/koa-router-meta.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tdzl2003/koa-router-meta/issues"
+  },
+  "peerDependencies": {
+    "koa": "2.x",
+    "koa-router": "7.x"
+  },
+  "homepage": "https://github.com/tdzl2003/koa-router-meta#readme"
+}
