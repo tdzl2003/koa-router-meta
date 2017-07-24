@@ -74,9 +74,9 @@ tbody td {
 <body>
   <h1>${renderBreadCrumb(currPath)}</h1>
   <h2>Sub Routes:</h2>
-${this._childRoutes ? this._childRoutes.map(v => renderSubRoute(currPath, v)) : ''}
+${this._childRoutes ? this._childRoutes.map(v => renderSubRoute(currPath, v)).join('') : ''}
   <h2>Requests:</h2>
-${this._requests ? this._requests.map(v => renderRequest(currPath, v)) : ''}
+${this._requests ? this._requests.map(v => renderRequest(currPath, v)).join('') : ''}
 </body>
 </html>
 `;
