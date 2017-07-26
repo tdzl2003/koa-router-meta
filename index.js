@@ -12,11 +12,19 @@ const createValidator = require('./createValidator');
 const statusCode = require('./statusCode');
 
 Router.prototype._recordRequest = function (opts) {
+  if (__DEV__) {
+    this.registerMetaRoute();
+  }
+
   this._requests = this._requests || [];
   this._requests.push(opts);
 };
 
 Router.prototype._recordSubRoute = function (opts) {
+  if (__DEV__) {
+    this.registerMetaRoute();
+  }
+
   if (!opts.path) {
     return;
   }
@@ -91,10 +99,6 @@ methods.forEach(method => {
   override.origin = origin;
 
   Router.prototype[method] = override;
-
-  if (__DEV__) {
-    this.registerMetaRoute();
-  }
 });
 
 Router.prototype.request = function(opts) {

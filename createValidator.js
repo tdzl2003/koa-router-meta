@@ -9,7 +9,11 @@ module.exports = function createValidator(fields, type) {
 
   const ret = (ctx, next) => {
     const values = ctx.request[type];
-    ctx.request[type] = validator(values, type);
+    const validated = validator(values, type);
+    Object.defineProperty(ctx.request, type, {
+      get: () => validated,
+    });
+    console.log(validated);
     return next();
   };
 
