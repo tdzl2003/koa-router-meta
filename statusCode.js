@@ -4,7 +4,7 @@
 
 const StatusError = require('./StatusError');
 
-exports.statusCode = function statusCode(opts) {
+module.exports = function statusCode(opts) {
   const codes = Object.keys(opts);
   const ret = (ctx, next) =>{
     return next().catch(err => {
@@ -28,8 +28,10 @@ exports.statusCode = function statusCode(opts) {
 <tr><td>Code</td><td>Comment</td></tr>
 </thead>
 <tbody>
-${codes.map(v=>`<tr><td>{v}</td><td>{opts[v]}</td></tr>`).join('')}
+${codes.map(v=>`<tr><td>${v}</td><td>${opts[v]}</td></tr>`).join('')}
 </tbody>
 </table>`;
   };
+
+  return ret;
 };

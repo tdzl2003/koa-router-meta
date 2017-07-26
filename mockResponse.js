@@ -20,9 +20,9 @@ module.exports = function mockResponse(opts) {
   ret.html = function() {
     const val = getResult();
     return `<h4>Sample Response:</h4>
-<div>
-${typeof(val) === 'object' ? JSON.stringify(val, true) : val}
-</div>`;
+<pre>
+${typeof(val) === 'object' ? JSON.stringify(val, true, 2) : val}
+</pre>`;
   };
 
   return ret;
