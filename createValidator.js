@@ -13,7 +13,6 @@ module.exports = function createValidator(fields, type) {
     Object.defineProperty(ctx.request, type, {
       get: () => validated,
     });
-    console.log(validated);
     return next();
   };
 
