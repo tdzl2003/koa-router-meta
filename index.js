@@ -9,6 +9,7 @@ require('./docHtml');
 
 const mockResponse = require('./mockResponse');
 const createValidator = require('./createValidator');
+const statusCode = require('./statusCode');
 
 Router.prototype._recordRequest = function (opts) {
   this._requests = this._requests || [];
@@ -44,15 +45,18 @@ methods.forEach(method => {
     }
     const { path, validate } = opts;
     const handlers = opts.handlers ? [...opts.handlers] : [];
-    if (opts.mockResponse) {
-      handlers.push(mockResponse(opts.mockResponse));
+    if (opts.mockResponse && global.__DEV__) {
+      handlers.unshift(mockResponse(opts.mockResponse));
+    }
+    if (opts.statusCodes && global.__DEV__) {
+      handlers.unshift(statusCode(opts.statusCodes));
     }
     if (validate) {
       const { query, body, params } = validate;
       if (body) {
         handlers.unshift(createValidator(body, "body"));
         handlers.unshift(bodyParser());
-      } else if (__DEV__) {
+      } else if (global.__DEV__) {
         handlers.unshift((ctx, next) => {
           ctx.request.body = null
           return next();
@@ -87,6 +91,10 @@ methods.forEach(method => {
   override.origin = origin;
 
   Router.prototype[method] = override;
+
+  if (__DEV__) {
+    this.registerMetaRoute();
+  }
 });
 
 Router.prototype.request = function(opts) {
@@ -113,8 +121,11 @@ Router.prototype.use = function(path, ...handlers) {
 };
 
 Router.prototype.registerMetaRoute = function() {
-  this.get.origin.call(this, '/_meta', this.metaRoute());
-  this.get.origin.call(this, '/_doc.html', this.metaDocRoute());
+  if (!this._metaRouteRegistered) {
+    this._metaRouteRegistered = true;
+    this.get.origin.call(this, '/_meta', this.metaRoute());
+    this.get.origin.call(this, '/_doc.html', this.metaDocRoute());
+  }
 };
 
 Object.assign(exports, require('./types'));
