@@ -124,6 +124,35 @@ function integerValidator(comment) {
     return ret;
 }
 
+function numberValidator(comment) {
+  const ret = (value, name) => {
+    if (typeof(value) === 'string') {
+      try {
+        return parseFloat(value);
+      } catch (e) {
+        // throw exception later.
+      }
+    } else if (typeof(value) === 'number') {
+      return value;
+    }
+    throw StatusError.BAD_REQUEST(__DEV__ && `Field ${name} should be a number, but JSON.stringify(${value})`);
+  };
+
+  ret.json = (required) => {
+    return ({
+      type: 'integer',
+      required,
+      comment,
+    })
+  };
+
+  ret.html = (required) => `
+<p>${comment} ${required ? '(*)' : ''} Number</p>
+`;
+
+  return ret;
+}
+
 function regexpValidator(comment, reg) {
     const ret = (value, name) => {
         if (typeof(value) === 'string') {
@@ -153,5 +182,6 @@ function regexpValidator(comment, reg) {
 
 exports.shape = createValidatorFactory(shapeValidator);
 exports.array = createValidatorFactory(arrayValidator);
-exports.integer =  createValidatorFactory(shapeValidator);
+exports.integer =  createValidatorFactory(integerValidator);
+exports.number =  createValidatorFactory(numberValidator);
 exports.regexp = createValidatorFactory(regexpValidator);
