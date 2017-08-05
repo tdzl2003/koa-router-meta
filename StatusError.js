@@ -31,9 +31,9 @@ StatusError.from = function(err) {
   if (err instanceof StatusError) {
     return err;
   } else if (err instanceof SyntaxError) {
-    return StatusError.BAD_REQUEST;
+    return StatusError.BAD_REQUEST();
   } else {
-    return StatusError.SERVER_INTERNAL;
+    return StatusError.SERVER_INTERNAL();
   }
 }
 
