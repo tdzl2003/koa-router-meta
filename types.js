@@ -36,7 +36,10 @@ function shapeValidator(comment, shape) {
             throw StatusError.BAD_REQUEST(__DEV__ && `Field ${name} should be a object, but JSON.stringify(${value})`);
         }
         for (const field of fields) {
-            result[field] = shape[field](values[field], __DEV__ && `${name}.${field}`);
+            const value = shape[field](values[field], __DEV__ && `${name}.${field}`);
+            if (value !== undefined) {
+              result[field] = value;
+            }
         }
         return result;
     };
